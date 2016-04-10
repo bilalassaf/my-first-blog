@@ -1,0 +1,13 @@
+{% extends 'vacations/base.html' %}
+
+{% block content %}
+    {% for vacation in vacations %}
+        <div class="vacation">
+            <div class="date">
+                {{ vacation.from_date }}
+                {{ vacation.to_date }}
+            </div>
+            <h1><a href="">{{ vacation.description|linebreaks }}</a></h1>            
+        </div>
+    {% endfor %}
+{% endblock %}

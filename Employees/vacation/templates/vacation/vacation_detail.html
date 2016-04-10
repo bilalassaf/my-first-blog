@@ -1,0 +1,11 @@
+{% extends 'vacations/base.html' %}
+
+{% block content %}
+    <div class="vacation">
+        <div class="date">
+                {{ vacation.from_date }}
+                {{ vacation.to_date }}
+        </div>
+        <h1>{{ vacation.description|linebreaks }}</h1>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'vacation/base.html' %}
+
+{% block content %}
+<script type="text/javascript">
+$(document).ready(function() {
+  
+    $('form').validate({
+        rules: {
+		{{ form.email.name }}: {required: true, email: true},
+		{{ form.password.name }}: {required: true},
+		{{ form.confirmpassword.name }}: {required: true },	
+	}
+    });
+});
+</script>
+
+<h1>Create Account</h1>
+    <form method="POST" class="my-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+{% endblock %}

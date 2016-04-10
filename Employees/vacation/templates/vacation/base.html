@@ -1,0 +1,37 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Vacations</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+
+	<script src="{% static 'script/jquery-1.11.3.min.js' %}" type="text/ecmascript"></script>
+	<script src="{% static 'script/jquery-ui.js' %}" type="text/ecmascript"></script>
+	<script src="{% static 'script/jquery.jqGrid.min.js' %}" type="text/ecmascript"></script>
+	<script src="{% static 'script/i18n/grid.locale-en.js' %}" type="text/ecmascript"></script>
+
+	<script src="{% static 'script/jquery.validate.js' %}" type="text/ecmascript"></script>
+
+	<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+	<link rel="stylesheet" href="{% static 'css/ui.jqgrid.css' %}">
+
+    </head>
+    <body>
+        <div class="page-header">	   
+	    {% if user.is_authenticated %}
+	    <a href="{% url 'logout' %}" class="top-menu"><span>Logout</span></a> 
+	    {% endif %}
+	    <h1><a href="/">Employee Vacations</a></h1>
+        </div>
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

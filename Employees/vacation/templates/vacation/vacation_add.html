@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<html>
+<head>
+	<script src="{% static 'script/jquery.datetimepicker.full.js' %}" type="text/ecmascript"></script>
+
+	<link rel="stylesheet" href="{% static 'css/jquery.datetimepicker.css' %}">
+  <script>
+      $(function () {
+          $('#{{ form.from_date.auto_id }}').datepicker();
+          $("#{{ form.to_date.auto_id }}").datepicker();
+
+      });
+  </script>
+<script type="text/javascript">
+FORM_RULES = {
+    '{{ form.description.name }}': 'required',
+    '{{ form.from_date.name }}': 'required',
+    '{{ form.to_date.name }}': 'required'
+};
+ 
+$(document).ready(function() {
+  
+    $('form').validate({
+        rules: FORM_RULES
+    });
+});
+</script>
+
+<script>
+$(function() {
+$('#my-form').on('submit', function(event){	
+    var isvalidate=$("form").valid();
+        if(isvalidate)
+        {
+    		event.preventDefault();
+    		//console.log("form submitted!")  // sanity check
+    		save();
+	}
+});
+
+});
+
+function save(){
+
+  $.ajax({
+    type:'POST',
+    data:$('#my-form').serialize(),
+    url: '/vacation_add/',
+    success:function(data) {
+      alert('Saved successfully.');
+      window.location='/vacation_view';
+    }
+  });
+}
+</script>
+</head>
+<body>
+    <form method="POST" action="/vacation_add/" id="my-form" class="my-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,97 @@
+{% extends 'vacation/base.html' %}
+
+{% block content %}
+   <script>
+  	$(function() {
+  	  $( "#tabs" ).tabs({
+      		beforeLoad: function( event, ui ) {
+		        ui.jqXHR.fail(function() {
+		          ui.panel.html(
+	            "Error in loading this tab." );
+		        });
+		      }
+		    });
+  	});	
+  </script>
+
+  <script type="text/javascript">
+    //<![CDATA[
+        /*global $ */
+                   
+	//$(function() {
+	$( document ).ready(function() {
+	    var mydata = {{ jsdata|safe }};
+	    
+            $("#datagrid").jqGrid({
+                //url: "user.json",
+                //datatype: "json",
+                datatype: "local",
+                data: mydata,
+                colNames:['id','description','created_date','from_date','to_date','duration'],
+                colModel:[
+			{name:'id',index:'id', width:100},
+                        {name:'description',index:'description', width:100},
+                        {name:'created_date',index:'created_date', width:100},
+                        {name:'from_date',index:'from_date', width:100}, 
+			{name:'to_date',index:'to_date', width:100}, 
+			{name:'duration',index:'to_date', width:100},                      
+                ],
+                rowNum:5,
+                rowList:[5,10,25,50,100],
+                loadonce: true,
+                pager: '#navGrid',
+                sortname: 'title',
+                sortorder: "asc", 
+                height: "auto", //210,
+                width:600,
+                onSelectRow: function(id) {
+			
+		    var toDate = new Date($(this).jqGrid('getCell', id, 'to_date'));
+		    if ((toDate.getTime() <= new Date().getTime())) {        			
+        			alert("Cannot edit past vacations!");
+        			return;
+    		    }
+
+                    var getID = $(this).jqGrid('getCell', id, 'id');
+
+		    var editURL = "{% url 'vacation_edit' pk=0 %}";		    
+		    editURL = editURL.replace(/0/, getID);
+		    popitup(editURL);
+                },
+                viewrecords: true,
+                caption:"MY VACATIONS LIST"
+            });
+        });
+    //]]>
+    </script>
+
+   <script>
+	function popitup(url) {
+  		$.ajax({
+    			url: url,
+    			success: function(data) {
+      			$("#dialog-form").html(data).dialog({modal:true}).dialog('open');
+    			}
+  		})
+  	return false;
+	}
+   </script>
+
+
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Vacations</a></li>
+    <li><a href='/vacation_add/'>Add Vacation</a></li>    
+  </ul>
+
+   <div id="tabs-1">
+   	 <table id="datagrid"><tr><td /></tr></table>
+         <div id="navGrid"></div>
+   </div>
+</div>
+
+
+<a href="" onclick="return popitup('/vacation_add/')">Add Vacation</a>
+<div id="dialog-form"></div>
+
+{% endblock %}
